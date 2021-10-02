@@ -27,7 +27,7 @@ namespace ReactBot.App.EventHandlers.MessageReceived
             if (userRoles.Any(x => string.Equals(_authorRoleName, x.Name, StringComparison.OrdinalIgnoreCase)))
             {
                 var reactionEmote = _emoteCache.GetEmote(message, _reactionEmoteName);
-                if (reactionEmote != null && !message.Reactions[reactionEmote].IsMe)
+                if (reactionEmote != null && BotReactionCalculator.ShouldBotReactToMessage(message, reactionEmote))
                 {
                     await message.AddReactionAsync(reactionEmote);
                 }

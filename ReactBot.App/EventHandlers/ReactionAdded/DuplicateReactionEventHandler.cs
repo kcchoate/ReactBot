@@ -1,6 +1,7 @@
 ﻿using Discord;
 using Discord.WebSocket;
 using ReactBot.App.EventHandlers.Interfaces;
+using ReactBot.App.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,7 +24,7 @@ namespace ReactBot.App.EventHandlers.ReactionAdded
         public async Task HandleReactionAdded(Cacheable<IUserMessage, ulong> cachedMessage, ISocketMessageChannel channel, SocketReaction reaction)
         {
             var message = await cachedMessage.GetOrDownloadAsync();
-            if (message != null && !message.Reactions[reaction.Emote].IsMe && _emotesToDupliate.Contains(reaction.Emote.Name))
+            if (message != null && BotReactionCalculator.ShouldBotReactToMessage(message, reaction.Emote))
             {
                 await message.AddReactionAsync(reaction.Emote);
             }
