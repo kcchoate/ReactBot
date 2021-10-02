@@ -12,14 +12,14 @@ namespace ReactBot.App.EventHandlers.ReactionRemoved
     public class RemoveLastReactionEventHandler : IReactionRemovedEventHandler
     {
         private HashSet<string> _reactionsToRemove { get; }
-        private IUser _targetUser { get; }
-        public RemoveLastReactionEventHandler(string reactionToRemove, IUser targetUser) : this(new[] { reactionToRemove }, targetUser)
+        private IDiscordClient _discordClient { get; }
+        public RemoveLastReactionEventHandler(string reactionToRemove, IDiscordClient discordClient) : this(new[] { reactionToRemove }, discordClient)
         { }
 
-        public RemoveLastReactionEventHandler(IEnumerable<string> reactionsToRemove, IUser targetUser)
+        public RemoveLastReactionEventHandler(IEnumerable<string> reactionsToRemove, IDiscordClient discordClient)
         {
             _reactionsToRemove = new HashSet<string>(reactionsToRemove, StringComparer.OrdinalIgnoreCase);
-            _targetUser = targetUser;
+            _discordClient = discordClient;
         }
 
         public async Task HandleReactionRemoved(Cacheable<IUserMessage, ulong> cachedMessage, ISocketMessageChannel channel, SocketReaction reaction)
@@ -29,7 +29,7 @@ namespace ReactBot.App.EventHandlers.ReactionRemoved
             {
                 if (reactionMetadata.ReactionCount == 1 && reactionMetadata.IsMe && _reactionsToRemove.Contains(reaction.Emote.Name))
                 {
-                    await message.RemoveReactionAsync(reaction.Emote, _targetUser);
+                    await message.RemoveReactionAsync(reaction.Emote, _discordClient.CurrentUser);
                 }
             }
         }

@@ -56,7 +56,7 @@ namespace ReactBot.App
 
         private static void AddReactionRemovedEventHandlers()
         {
-            var removeLastReactionHandler = new RemoveLastReactionEventHandler("shutupbitch", _client.CurrentUser);
+            var removeLastReactionHandler = new RemoveLastReactionEventHandler("shutupbitch", _client);
 
             _client.ReactionRemoved += removeLastReactionHandler.HandleReactionRemoved;
         }
