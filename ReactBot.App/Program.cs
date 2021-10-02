@@ -31,14 +31,17 @@ namespace ReactBot.App
 
             // TODO: push this setup into config. Once that's done we can iterate of the items which implement
             // IMessageReceivedEventHandler and configure the client using the results.
+            var ghostEmote = "\U0001F47B";
             var emoteCache = new EmoteCache();
             var authorRoleHandler = new AddReactionToAuthorRoleEventHandler("Cheesey Pal", "peepoCheese", emoteCache);
-            var userNameHandler = new AddReactionToUserNameEventHandler("Ghost", "\U0001F47B", emoteCache);
-            var keywordHandler = new AddReactionToKeywordMatchEventHandler("\U0001F47B", new[] { "ghost" }, emoteCache);
+            var userNameHandler = new AddReactionToUserNameEventHandler("Ghost", ghostEmote, emoteCache);
+            var keywordHandler = new AddReactionToKeywordMatchEventHandler(ghostEmote, new[] { "ghost" }, emoteCache);
+            var mentionedUserHandler = new AddReactionToMentionedUsersEventHandler(ghostEmote, "Ghost", emoteCache);
 
             _client.MessageReceived += authorRoleHandler.HandleReceivedMessage;
             _client.MessageReceived += userNameHandler.HandleReceivedMessage;
             _client.MessageReceived += keywordHandler.HandleReceivedMessage;
+            _client.MessageReceived += mentionedUserHandler.HandleReceivedMessage;
 
         }
 
