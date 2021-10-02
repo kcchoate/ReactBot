@@ -29,10 +29,10 @@ namespace ReactBot.App.EventHandlers.MessageReceived
         {
             if (message.MentionedUsers.Select(x => x.Username).Intersect(_mentionedUsersNames, StringComparer.OrdinalIgnoreCase).Any())
             {
-                var reactEmote = _emoteCache.GetEmote(message, _reactEmoteName);
-                if (reactEmote != null)
+                var reactionEmote = _emoteCache.GetEmote(message, _reactEmoteName);
+                if (reactionEmote != null && !message.Reactions[reactionEmote].IsMe)
                 {
-                    await message.AddReactionAsync(reactEmote);
+                    await message.AddReactionAsync(reactionEmote);
                 }
             }
         }
