@@ -11,22 +11,21 @@ namespace ReactBot.App.EventHandlers.ReactionAdded
 {
     public class DuplicateReactionEventHandler : IReactionAddedEventHandler
     {
-        private HashSet<string> _sourceReactionNames { get; }
-        public DuplicateReactionEventHandler(string sourceReactionName) : this(new[] { sourceReactionName })
+        private HashSet<string> _emotesToDupliate { get; }
+        public DuplicateReactionEventHandler(string emoteToDuplicate) : this(new[] { emoteToDuplicate })
         { }
 
-        public DuplicateReactionEventHandler(IEnumerable<string> sourceReactionNames)
+        public DuplicateReactionEventHandler(IEnumerable<string> emotesToDuplicate)
         {
-            _sourceReactionNames = new HashSet<string>(sourceReactionNames, StringComparer.OrdinalIgnoreCase);
+            _emotesToDupliate = new HashSet<string>(emotesToDuplicate, StringComparer.OrdinalIgnoreCase);
         }
 
-        public async Task HandleReactionAdded(Cacheable<IUserMessage, ulong> message, ISocketMessageChannel channel, SocketReaction reaction)
+        public async Task HandleReactionAdded(Cacheable<IUserMessage, ulong> cachedMessage, ISocketMessageChannel channel, SocketReaction reaction)
         {
-            if (reaction.Message.IsSpecified 
-                && !reaction.Message.Value.Author.IsBot
-                && _sourceReactionNames.Contains(reaction.Emote.Name))
+            var message = await cachedMessage.GetOrDownloadAsync();
+            if (message != null && !message.Reactions[reaction.Emote].IsMe && _emotesToDupliate.Contains(reaction.Emote.Name))
             {
-                await reaction.Message.Value.AddReactionAsync(reaction.Emote);
+                await message.AddReactionAsync(reaction.Emote);
             }
         }
     }
