@@ -22,7 +22,7 @@ namespace ReactBot.App.EventHandlers.MessageReceived
         }
         public async Task HandleReceivedMessage(SocketMessage message)
         {
-            if (_keywords.Any(x => message.Content.Contains(x, StringComparison.InvariantCultureIgnoreCase)))
+            if (_keywords.Intersect(message.Content.Split(" ", StringSplitOptions.RemoveEmptyEntries), StringComparer.OrdinalIgnoreCase).Any())
             {
                 var reactionEmote = _emoteCache.GetEmote(message, _reactionEmoteName);
                 if (reactionEmote != null && !message.Reactions[reactionEmote].IsMe)

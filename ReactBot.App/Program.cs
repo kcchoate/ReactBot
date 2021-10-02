@@ -35,7 +35,7 @@ namespace ReactBot.App
             var emoteCache = new EmoteCache();
             var authorRoleHandler = new AddReactionToAuthorRoleEventHandler("Cheesey Pal", "peepoCheese", emoteCache);
             var userNameHandler = new AddReactionToUserNameEventHandler("GOING GHOST", ghostEmote, emoteCache);
-            var keywordHandler = new AddReactionToKeywordMatchEventHandler(ghostEmote, new[] { "GOING GHOST" }, emoteCache);
+            var keywordHandler = new AddReactionToKeywordMatchEventHandler(ghostEmote, new[] { "ghost" }, emoteCache);
             var mentionedUserHandler = new AddReactionToMentionedUsersEventHandler(ghostEmote, "GOING GHOST", emoteCache);
 
             _client.MessageReceived += authorRoleHandler.HandleReceivedMessage;
