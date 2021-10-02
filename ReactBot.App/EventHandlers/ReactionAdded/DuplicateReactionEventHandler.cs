@@ -24,7 +24,7 @@ namespace ReactBot.App.EventHandlers.ReactionAdded
         public async Task HandleReactionAdded(Cacheable<IUserMessage, ulong> cachedMessage, ISocketMessageChannel channel, SocketReaction reaction)
         {
             var message = await cachedMessage.GetOrDownloadAsync();
-            if (message != null && BotReactionCalculator.ShouldBotReactToMessage(message, reaction.Emote))
+            if (BotReactionCalculator.ShouldBotReactToMessage(message, reaction.Emote))
             {
                 await message.AddReactionAsync(reaction.Emote);
             }

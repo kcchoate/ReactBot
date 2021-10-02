@@ -12,11 +12,19 @@ namespace ReactBot.App.Services
     {
         public static bool ShouldBotReactToMessage(IUserMessage message, IEmote emote)
         {
+            if (message is null || emote is null)
+            {
+                return false;
+            }
             var doesReactionAlreadyExist = message.Reactions.TryGetValue(emote, out var reactionMetadata);
             return !doesReactionAlreadyExist || (doesReactionAlreadyExist && !reactionMetadata.IsMe);
         }
         public static bool ShouldBotReactToMessage(SocketMessage message, IEmote emote)
         {
+            if (message is null || emote is null)
+            {
+                return false;
+            }
             var doesReactionAlreadyExist = message.Reactions.TryGetValue(emote, out var reactionMetadata);
             return !doesReactionAlreadyExist || (doesReactionAlreadyExist && !reactionMetadata.IsMe);
         }

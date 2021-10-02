@@ -25,7 +25,7 @@ namespace ReactBot.App.EventHandlers.MessageReceived
             if (_keywords.Intersect(message.Content.Split(" ", StringSplitOptions.RemoveEmptyEntries), StringComparer.OrdinalIgnoreCase).Any())
             {
                 var reactionEmote = _emoteCache.GetEmote(message, _reactionEmoteName);
-                if (reactionEmote != null && BotReactionCalculator.ShouldBotReactToMessage(message, reactionEmote))
+                if (BotReactionCalculator.ShouldBotReactToMessage(message, reactionEmote))
                 {
                     await message.AddReactionAsync(reactionEmote);
                 }
