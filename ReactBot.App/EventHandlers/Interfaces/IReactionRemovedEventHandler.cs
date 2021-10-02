@@ -8,8 +8,8 @@ using System.Threading.Tasks;
 
 namespace ReactBot.App.EventHandlers.Interfaces
 {
-    public interface IReactionAddedEventHandler
+    public interface IReactionRemovedEventHandler
     {
-        Task HandleReactionAdded(Cacheable<IUserMessage, ulong> cachedMessage, ISocketMessageChannel channel, SocketReaction reaction);
+        Task HandleReactionRemoved(Cacheable<IUserMessage, ulong> cachedMessage, ISocketMessageChannel channel, SocketReaction reaction);
     }
 }

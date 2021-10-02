@@ -3,6 +3,7 @@ using Discord.WebSocket;
 using Newtonsoft.Json;
 using ReactBot.App.EventHandlers.MessageReceived;
 using ReactBot.App.EventHandlers.ReactionAdded;
+using ReactBot.App.EventHandlers.ReactionRemoved;
 using ReactBot.App.Services;
 using System;
 using System.Collections.Generic;
@@ -18,6 +19,7 @@ namespace ReactBot.App
         {
             AddMessageReceivedEventHandlers();
             AddReactionAddedEventHandlers();
+            AddReactionRemovedEventHandlers();
 
             await LoginClientAsync();
             await StartClientAsync();
@@ -50,6 +52,13 @@ namespace ReactBot.App
             var duplicateReactionHandler = new DuplicateReactionEventHandler("shutupbitch");
 
             _client.ReactionAdded += duplicateReactionHandler.HandleReactionAdded;
+        }
+
+        private static void AddReactionRemovedEventHandlers()
+        {
+            var removeLastReactionHandler = new RemoveLastReactionEventHandler("shutupbitch", _client);
+
+            _client.ReactionRemoved += removeLastReactionHandler.HandleReactionRemoved;
         }
 
         private static async Task LoginClientAsync()
